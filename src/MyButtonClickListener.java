@@ -10,6 +10,8 @@ public class MyButtonClickListener implements ActionListener {
     private static boolean flag = true;
     private static String [] inputsAndOperation = new String[3];
     private static String fnum1 = "";
+    private static String temp = "";
+    private static boolean flag2 = true;
     private static String operator = "";
     private static String fnum2 = "";
     static int operationClicks = 0;
@@ -36,8 +38,13 @@ public class MyButtonClickListener implements ActionListener {
                 reset();
             }
             else if(appendString.equals("=")) {
-                perFormCalculation(fnum1,operator,fnum2);
-
+                fnum2 = textField.getText();
+                clearHistoryField();
+                historyField.setText(fnum1 + " " + operator + " "+ fnum2 + " ="  );
+                perFormCalculation(operator);
+                textField.setText(fnum1);
+                fnum2 = "";
+                return;
             }else if(appendString.equals(".")){
                 String num = textField.getText();
                 if(!hasDot(num)) addToTextField(appendString);
@@ -48,37 +55,41 @@ public class MyButtonClickListener implements ActionListener {
 
                 if(fnum1.isEmpty()){
                     fnum1= textField.getText();
-                    operator =appendString;
-                    clearTextField();
+                    displayThenDelete();
                 }
-               else if(fnum2.isEmpty()){
+                else if(historyField.getText().contains("=")){
+                    displayThenDelete();
+                }
+               else if(!fnum1.isEmpty()&&!operator.isEmpty()){
                     fnum2= textField.getText();
                     clearTextField();
-                    fnum1 = calculator.add(fnum1,fnum2);
+                    perFormCalculation(operator);
                     textField.setText(fnum1);
+                    historyField.setText(fnum1 + " " + operator);
                     fnum2 = "";
                     flag = false;
+
                 }
-
-
+                operator = appendString;
             }
-
             }
 
 
         else {
             if(flag) {
                 addToTextField(appendString);
+                System.out.println("true");
             }else{
                 clearTextField();
                 addToTextField(appendString);
                 flag=true;
+                System.out.println("false");
             }
 
 
         }
-        System.out.println(fnum1 + " "+operator + " " +fnum2);
-
+        historyField.setText(fnum1 + " " + operator);
+        System.out.println(fnum1 + " " + operator);
 
     }
 
@@ -92,7 +103,7 @@ public class MyButtonClickListener implements ActionListener {
         textField.setText("");
     }
     public static void clearHistoryField(){
-
+        historyField.setText("");
     }
     public static void removeLastDigit(String text){
         if(!text.isEmpty()) {
@@ -111,7 +122,13 @@ public class MyButtonClickListener implements ActionListener {
             return false;
         }
     }
-    public static void perFormCalculation(String fnum, String Operator ,String fnums){
+    public static void perFormCalculation( String Operator){
+        if(operator.equals("+")) fnum1 = calculator.add(fnum1,fnum2);
+        else if (operator.equals("X")) fnum1 = calculator.multiply(fnum1,fnum2);
+        else if (operator.equals("—")) fnum1 = calculator.subtract(fnum1,fnum2);
+        else if (operator.equals("/")) fnum1 = calculator.Divide(fnum1,fnum2);
+        else if(operator.equals("%"))fnum1 = calculator.modulo(fnum1,fnum2);
+
 
     }
     public static boolean hasDot(String num) {
@@ -126,18 +143,13 @@ public class MyButtonClickListener implements ActionListener {
         operator = "" ;
         fnum2 = "";
         clearTextField();
+        historyField.setText("");
+    }
+    public static void displayThenDelete(){
+        textField.setText(fnum1);
+        flag =false;
     }
 }
 
 
 
-/*
-  inputsAndOperation[0] = textField.getText();
-                inputsAndOperation[1] = appendString;
-                if(inputsAndOperation[0].isEmpty() &&!inputsAndOperation[1].isEmpty()){
-                    inputsAndOperation[1] = appendString;
-                }
-                if(!inputsAndOperation[0].isEmpty()) {
-                    historyField.setText(inputsAndOperation[0] + "" + inputsAndOperation[1]);
-                }
- */

@@ -12,6 +12,9 @@ public class Calculator {
     public static String Divide(String x , String y){
         return  formatDouble(Double.parseDouble(x) / Double.parseDouble(y));
     }
+    public static String modulo(String x , String y){
+        return  formatDouble(Double.parseDouble(x) % Double.parseDouble(y));
+    }
     public static String formatDouble(double value) {
         if (value == (int) value) {
             // If the value is an integer, return it as an integer (no decimal point)
