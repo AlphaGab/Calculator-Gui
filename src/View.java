@@ -52,7 +52,8 @@ public class View  {
         bDot = createButton(".",Color.WHITE,Color.decode("#0bcde4"));
         bNegate = createButton("-/+",Color.white,Color.decode("#0bcde4"));
         bEqual = createButton("=",Color.decode("#CAF0F0"),Color.decode("#0bcde4"));
-        JButton[] arrayOfButtons = {bRemainder,bCE,bC,bDel,bSEVEN,bEIGHT,bNINE,
+        bDivide = createButton("/",Color.decode("#CAF0F0"),Color.decode("#0bcde4"));
+        JButton[] arrayOfButtons = {bRemainder,bCE,bDel,bDivide,bSEVEN,bEIGHT,bNINE,
                 bMultiply,bFOUR,bFIVE,bSIX,bMinus,bONE,bTWO,bTHREE,bPlus,bZERO,bNegate,bDot,bEqual};
 
 
@@ -91,7 +92,7 @@ public class View  {
         return buttonPanel; // Return the panel with buttons
     }
     public static JFrame initializeFrame(){
-        frame=new JFrame();//creating instance of JFrame
+        frame=new JFrame("Abaya-Madrid-Arzaga Calculator");//creating instance of JFrame
         frame.setResizable(false);
         int frameWidth = 400;
         int frameHeight = 500;
@@ -104,6 +105,7 @@ public class View  {
         JButton button = new JButton(label);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
+        button.setOpaque(true);
        button.setBackground(background);
        button.setForeground(Foreground);
        button.setFont(setDefaultFont(20,Font.BOLD));
