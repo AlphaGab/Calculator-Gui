@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,14 +8,12 @@ public class MyButtonClickListener implements ActionListener {
 
     private static Calculator calculator;
     private static boolean flag = true;
-    private static String [] inputsAndOperation = new String[3];
     private static String fnum1 = "";
-    private static String temp = "";
-    private static boolean flag2 = true;
+
+
     private static String operator = "";
     private static String fnum2 = "";
-    static int operationClicks = 0;
-    MyButtonClickListener(JTextField answerField,JTextField historyField) {
+   MyButtonClickListener(JTextField answerField,JTextField historyField) {
         calculator = new Calculator();
         this.textField = answerField;
         this.historyField = historyField;
@@ -48,11 +46,16 @@ public class MyButtonClickListener implements ActionListener {
             }else if(appendString.equals(".")){
                 String num = textField.getText();
                 if(!hasDot(num)) addToTextField(appendString);
-
-
                 }
-            else{
+            else if(appendString.equals(("-/+"))){
+                String textFieldChar = textField.getText();
+               if(isNum(textFieldChar)){
+                  String negatedString = calculator.negate(textFieldChar);
+                  textField.setText(negatedString);
+               }
 
+            }
+            else{
                 if(fnum1.isEmpty()){
                     fnum1= textField.getText();
                     displayThenDelete();
@@ -61,13 +64,13 @@ public class MyButtonClickListener implements ActionListener {
                     displayThenDelete();
                 }
                else if(!fnum1.isEmpty()&&!operator.isEmpty()){
-                    fnum2= textField.getText();
-                    clearTextField();
-                    perFormCalculation(operator);
-                    textField.setText(fnum1);
-                    historyField.setText(fnum1 + " " + operator);
-                    fnum2 = "";
-                    flag = false;
+                   if(flag) {
+                       getAndClearTextField();
+                       perFormCalculation(operator);
+                       displayThenDelete();
+                   }
+                   fnum2 = "";
+
 
                 }
                 operator = appendString;
@@ -123,11 +126,11 @@ public class MyButtonClickListener implements ActionListener {
         }
     }
     public static void perFormCalculation( String Operator){
-        if(operator.equals("+")) fnum1 = calculator.add(fnum1,fnum2);
-        else if (operator.equals("X")) fnum1 = calculator.multiply(fnum1,fnum2);
-        else if (operator.equals("—")) fnum1 = calculator.subtract(fnum1,fnum2);
-        else if (operator.equals("/")) fnum1 = calculator.Divide(fnum1,fnum2);
-        else if(operator.equals("%"))fnum1 = calculator.modulo(fnum1,fnum2);
+        if(Operator.equals("+")) fnum1 = calculator.add(fnum1,fnum2);
+        else if (Operator.equals("X")) fnum1 = calculator.multiply(fnum1,fnum2);
+        else if (Operator.equals("—")) fnum1 = calculator.subtract(fnum1,fnum2);
+        else if (Operator.equals("/")) fnum1 = calculator.Divide(fnum1,fnum2);
+        else if(Operator.equals("%"))fnum1 = calculator.modulo(fnum1,fnum2);
 
 
     }
@@ -144,11 +147,17 @@ public class MyButtonClickListener implements ActionListener {
         fnum2 = "";
         clearTextField();
         historyField.setText("");
+        flag = true;
     }
     public static void displayThenDelete(){
         textField.setText(fnum1);
         flag =false;
     }
+    public static void getAndClearTextField(){
+        fnum2 = textField.getText();
+        clearTextField();
+    }
+
 }
 
 
